@@ -10,30 +10,32 @@ pprint = pp.pprint
 
 #### Part 1: Multiple Choice #########################################
 
-ANSWER_1 = ''
+ANSWER_1 = '2' # can only assert consequent
 
-ANSWER_2 = ''
+ANSWER_2 = '4' # don't change the assert
 
-ANSWER_3 = ''
+ANSWER_3 = '2'
 
-ANSWER_4 = ''
+ANSWER_4 = '0'
 
-ANSWER_5 = ''
+ANSWER_5 = '3'
 
-ANSWER_6 = ''
+ANSWER_6 = '1'
 
-ANSWER_7 = ''
+ANSWER_7 = '0' # there's already a match in the data
 
 #### Part 2: Transitive Rule #########################################
 
 # Fill this in with your rule 
-transitive_rule = IF( AND( ), THEN( ) )
+transitive_rule = IF( AND( '(?x) beats (?z)',
+                           '(?z) beats (?y)' ), 
+                    THEN( '(?x) beats (?y)' ) )
 
 # You can test your rule by uncommenting these pretty print statements
 #  and observing the results printed to your screen after executing lab1.py
-# pprint(forward_chain([transitive_rule], abc_data))
-# pprint(forward_chain([transitive_rule], poker_data))
-# pprint(forward_chain([transitive_rule], minecraft_data))
+pprint(forward_chain([transitive_rule], abc_data))
+pprint(forward_chain([transitive_rule], poker_data))
+pprint(forward_chain([transitive_rule], minecraft_data))
 
 
 #### Part 3: Family Relations #########################################
