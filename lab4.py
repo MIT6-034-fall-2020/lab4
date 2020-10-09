@@ -33,21 +33,22 @@ transitive_rule = IF( AND( '(?x) beats (?z)',
 
 # You can test your rule by uncommenting these pretty print statements
 #  and observing the results printed to your screen after executing lab1.py
-pprint(forward_chain([transitive_rule], abc_data))
-pprint(forward_chain([transitive_rule], poker_data))
+# pprint(forward_chain([transitive_rule], abc_data))
+# pprint(forward_chain([transitive_rule], poker_data))
 pprint(forward_chain([transitive_rule], minecraft_data))
 
 
 #### Part 3: Family Relations #########################################
 
 # Define your rules here. We've given you an example rule whose lead you can follow:
-friend_rule = IF( AND("person (?x)", "person (?y)"), THEN ("friend (?x) (?y)", "friend (?y) (?x)") )
-
+friend_rule = IF( AND("person (?x)", "person (?y)"), THEN("friend (?x) (?y)", "friend (?y) (?x)") )
+sibling_rule = IF( AND( 'parent (?p) (?c1)', 'parent (?p) (?c1)'), 
+                THEN( 'sibling (?c1) (?c2)', 'sibling (?c2) (?c3)' ) )
 
 
 
 # Add your rules to this list:
-family_rules = [ friend_rule ]
+family_rules = [ sibling_rule ]
 
 # Uncomment this to test your data on the Simpsons family:
 # pprint(forward_chain(family_rules, simpsons_data, verbose=False))
