@@ -35,20 +35,29 @@ transitive_rule = IF( AND( '(?x) beats (?z)',
 #  and observing the results printed to your screen after executing lab1.py
 # pprint(forward_chain([transitive_rule], abc_data))
 # pprint(forward_chain([transitive_rule], poker_data))
-pprint(forward_chain([transitive_rule], minecraft_data))
+# pprint(forward_chain([transitive_rule], minecraft_data))
 
 
 #### Part 3: Family Relations #########################################
 
 # Define your rules here. We've given you an example rule whose lead you can follow:
 friend_rule = IF( AND("person (?x)", "person (?y)"), THEN("friend (?x) (?y)", "friend (?y) (?x)") )
-sibling_rule = IF( AND( 'parent (?p) (?c1)', 'parent (?p) (?c1)'), 
-                THEN( 'sibling (?c1) (?c2)', 'sibling (?c2) (?c3)' ) )
+identity_rule = IF( AND('person (?x)', 'person (?x)'),  THEN( 'same (?x) (?x)' ) )
+sibling_rule = IF( AND( 'parent (?p) (?m)', 'parent (?p) (?n)', NOT( 'same (?m) (?n)' ) ), 
+                THEN( 'sibling (?m) (?n)', 'sibling (?m) (?n)' ) )
+child_rule = IF( AND('parent (?p) (?c)', NOT( 'same (?p) (?c)')), 
+                THEN('child (?c) (?p)') )
+cousin_rule = IF( AND( 'parent (?a) (?x)', 'parent (?b) (?y)',
+                        'sibling (?a) (?b)', NOT('sibling (?x) (?y)')),
+                THEN('cousin (?x) (?y)', 'cousin (?y) (?x)'))
+grandrelation_rule = IF( AND('parent (?a) (?b)', 'parent (?b) (?c)'),
+                THEN('grandparent (?a) (?c)', 'grandchild (?c) (?a)'))
+
 
 
 
 # Add your rules to this list:
-family_rules = [ sibling_rule ]
+family_rules = [ identity_rule, sibling_rule, child_rule, cousin_rule, grandrelation_rule ]
 
 # Uncomment this to test your data on the Simpsons family:
 # pprint(forward_chain(family_rules, simpsons_data, verbose=False))
@@ -66,7 +75,7 @@ harry_potter_family_cousins = [
 
 # To see if you found them all, uncomment this line:
 # pprint(harry_potter_family_cousins)
-
+# print(len(harry_potter_family_cousins)) # Should be 14
 
 #### Part 4: Backward Chaining #########################################
 
