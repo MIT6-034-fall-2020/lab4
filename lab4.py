@@ -95,7 +95,35 @@ def backchain_to_goal_tree(rules, hypothesis):
     (possibly with unbound variables), *not* AND or OR objects.
     Make sure to use simplify(...) to flatten trees where appropriate.
     """
-    raise NotImplementedError
+    # Need to account for case when neither AND nor OR
+    tree = OR(hypothesis)
+    for rule in rules:
+        con = rule.consequent()
+        ant = rule.antecedent()
+        isOR = isinstance(ant, OR)
+        isAND = isinstance(ant, AND)
+        mat = match(con, hypothesis)
+        if mat == None:
+            continue
+        elif mat == {}:
+            if isOR:
+                tree.append(OR([backchain_to_goal_tree(rules, a) for a in ant]))
+            elif isAND:
+                tree.append(AND([backchain_to_goal_tree(rules, a) for a in ant]))
+            else:
+                tree.append(backchain_to_goal_tree(rules, ant))
+        else:
+            if isOR:
+                tree.append(OR([backchain_to_goal_tree(rules, populate(a, mat)) for a in ant]))
+            elif isAND:
+                tree.append(AND([backchain_to_goal_tree(rules, populate(a, mat)) for a in ant]))
+            else:
+                tree.append(backchain_to_goal_tree(rules, populate(ant, mat)))
+
+    return simplify(tree)
+
+
+
 
 
 # Uncomment this to test out your backward chainer:
@@ -104,12 +132,12 @@ def backchain_to_goal_tree(rules, hypothesis):
 
 #### Survey #########################################
 
-NAME = None
-COLLABORATORS = None
-HOW_MANY_HOURS_THIS_LAB_TOOK = None
-WHAT_I_FOUND_INTERESTING = None
-WHAT_I_FOUND_BORING = None
-SUGGESTIONS = None
+NAME = "Nabib Ahmed"
+COLLABORATORS = "None"
+HOW_MANY_HOURS_THIS_LAB_TOOK = "7"
+WHAT_I_FOUND_INTERESTING = "The logic puzzles of the different parts."
+WHAT_I_FOUND_BORING = "Nothing"
+SUGGESTIONS = "Great lab!"
 
 
 ###########################################################
